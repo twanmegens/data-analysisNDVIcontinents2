@@ -22,3 +22,25 @@ show(dfSAT)
 #plotting of residuals
 ggplot(data=dfSAT)+
   geom_point(aes(x=Year, y=residuals))
+
+###version 2
+
+
+#mutating the data to include fit residuals
+Combined=mutate(Combined,residuals=fit_22$residuals)
+#show(Combined)
+
+#plotting of residuals
+ggplot(data=Combined)+
+  geom_point(aes(x=Year, y=residuals))
+
+
+
+#chisquare test
+result <- chisq.test(Combined[,2])
+print(result)
+show(result)
+h=hist(Combined[,3], breaks=4)
+hist(Combined[,3], breaks=8)
+show(h)
+show(h$density[1])
