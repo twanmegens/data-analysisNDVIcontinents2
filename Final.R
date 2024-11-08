@@ -267,7 +267,7 @@ ggplot(Combined) +
                   slope = fit_16$coefficients[2])) +
   labs(x = 'Year', y = 'Mean NDVI Value')
 
-#compare BSk climate
+#compare BWh climate
 ggplot(Combined) +
   geom_point(aes(x = Year, y = K8, color = "K8")) +
   geom_abline(aes(color = 'K8',
@@ -331,6 +331,18 @@ ggplot(Combined) +
                   slope = fit_20$coefficients[2])) +
   labs(x = 'Year', y = 'Mean NDVI Value')
 
+#####residual testing
+
+#mutating the data to include fit residuals
+Combined=mutate(Combined,residuals=fit_21$residuals)
+
+#show(Combined)
+
+#plotting of residuals
+ggplot(data=Combined)+
+  geom_point(aes(x=Year, y=residuals))
+
+######renaming
 
 Kv1 = c(Combined$K1)
 Kv2 = c(Combined$K2)
@@ -365,7 +377,7 @@ Kv30 = c(Combined$K30)
 Kv31 = c(Combined$K31)
 Kv32 = c(Combined$K32)
 
-
+#####anova
 
 # Af 10.19.25.26.28 anova
 AfVector = c(Kv10,Kv19,Kv25,Kv26,Kv28)
@@ -429,3 +441,112 @@ ETLength = c(rep('Kv1', length(Kv1)),rep('Kv7', length(Kv7)), rep('Kv20', length
 ETDATA = data.frame(ETVector, ETLength)
 ETANOVA = aov(ETVector~ETLength, data = ETDATA)
 anova(ETANOVA)
+
+
+###f-test####
+
+# Af 10.19.25.26.28 ftest
+var.test(Kv10, Kv19)
+var.test(Kv10, Kv25)
+var.test(Kv26, Kv10)
+var.test(Kv28, Kv10)
+var.test(Kv25, Kv19)
+var.test(Kv26, Kv19)
+var.test(Kv28, Kv19)
+var.test(Kv26, Kv25)
+var.test(Kv28, Kv25)
+var.test(Kv28, Kv26)
+#not 28,19
+
+# Aw23.24.31 ftest
+var.test(Kv24, Kv23)
+var.test(Kv31, Kv23)
+var.test(Kv24, Kv31)
+#all good
+
+# BSh14.21.32 ftest
+var.test(Kv21, Kv14)
+var.test(Kv32, Kv14)
+var.test(Kv21, Kv32)
+#only 21,32
+
+# BSk6.4.16 ftest
+var.test(Kv6, Kv4)
+var.test(Kv6, Kv16)
+var.test(Kv16, Kv4)
+
+# BWh8.22  ftest
+var.test(Kv8, Kv22)
+#too much
+
+# Cfb2.3.11.30  ftest
+var.test(Kv2, Kv3)
+var.test(Kv2, Kv11)
+var.test(Kv2, Kv30)
+var.test(Kv3, Kv11)
+var.test(Kv3, Kv30)
+var.test(Kv11, Kv30)
+
+# Cwa9.13.15  ftest
+var.test(Kv9, Kv13)
+var.test(Kv9, Kv15)
+var.test(Kv13, Kv15)
+#only 9,13
+
+# ET1.7.20  ftest
+var.test(Kv1, Kv7)
+var.test(Kv1, Kv20)
+var.test(Kv7, Kv20)
+
+
+###t-test####
+
+# Af 10.19.25.26.28 ttest
+t.test(Kv10,Kv19)
+t.test(Kv10,Kv25)
+t.test(Kv10,Kv26)
+t.test(Kv10,Kv28)
+t.test(Kv19,Kv25)
+t.test(Kv19,Kv26)
+t.test(Kv19,Kv28)
+t.test(Kv25,Kv26)
+t.test(Kv25,Kv28)
+t.test(Kv26,Kv28)
+
+# Am27.29  ttest
+t.test(Kv27,Kv29)
+
+# Aw23.24.31  ttest
+t.test(Kv23,Kv24)
+t.test(Kv23,Kv31)
+t.test(Kv24,Kv31)
+
+# BSh14.21.32 ttest
+t.test(Kv14,Kv21)
+t.test(Kv14,Kv32)
+t.test(Kv21,Kv32)
+
+# BSk6.4.16 ttest not possible?
+t.test(Kv4,Kv6)
+t.test(Kv4,Kv16)
+t.test(Kv6,Kv16)
+# BWh8.22 ttest not possible
+t.test(Kv8,Kv22)
+# Cfb2.3.11.30 ttest
+t.test(Kv2,Kv3)
+t.test(Kv2,Kv11)
+t.test(Kv2,Kv30)
+t.test(Kv3,Kv11)
+t.test(Kv3,Kv30)
+t.test(Kv11,Kv30)
+# Cwa9.13.15 ttest
+t.test(Combined[9],Combined[13])
+t.test(Combined[9],Combined[15])
+t.test(Combined[13],Combined[15])
+# ET7.20 ttest 1 not possible
+t.test(Kv1,Kv7)
+t.test(Kv1,Kv20)
+t.test(Kv7,Kv20)
+#none
+
+#out of 27, 5 correlate
